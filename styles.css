@@ -6,7 +6,7 @@
     width: 100%;
     height: 100vh;
     position: relative;
-    background-color: #00ccff;
+   background-image: url(background.jpg);
     overflow-x: hidden;
 }
 .clouds{
@@ -44,15 +44,10 @@
     }
 }
 .airplane{
-    top: 300px;
-    left: 30%;
+    
     position: absolute;
 }
-.replacement{
-    top: 300px;
-    left: 30%;
-    position: absolute;
-}
+
 .countdown {
     display: flex;
     justify-content: center;
