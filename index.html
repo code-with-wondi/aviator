@@ -5,45 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .airplane {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      transition: transform 7s linear;
+    }
+
+    .replacement {
+      display: none;
+      position: absolute;
+      top: calc(60vh - 50%); /* Adjust -50% to align the center of the airplane */
+  right: calc(60vw - 50%);
+        position: absolute;
+      }
+
+    .message {
+      display: none;
+      font-size: 80px;
+      font-weight: bold;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      color: white;
+    }
+
+    .timer {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: white;
+      font-size: 48px;
+      margin: 0 20px;
+    }
+  </style>
 </head>
 <body>
   <div class="sky">
-    <div class="clouds"></div>
+    <!--<div class="clouds"></div> -->
     <div class="airplane">
       <img src="jet.png" alt="">
     </div>
     <div class="flame"></div>
     <div class="flame flame2"></div>
-    <div class="timer">00:000</div>
-    <div class="mountains"></div>
+    <div class="timer">00</div>
+    <!--<div class="mountains"></div> -->
+    <div class="replacement">
+      <img src="giphy.gif" alt="Replacement Gif">
+    </div>
+    <div class="message">Plane crushed</div>
   </div>
 
   <script>
     const airplaneDiv = document.querySelector('.airplane');
-    const replacementDiv = document.createElement('div');
-    replacementDiv.className = 'replacement';
-    replacementDiv.innerHTML = '<img src="giphy.gif" alt="Replacement Gif">';
+    const replacementDiv = document.querySelector('.replacement');
+    const messageDiv = document.querySelector('.message');
+    const timerDiv = document.querySelector('.timer');
+    const airplanePosition = airplaneDiv.getBoundingClientRect();
 
-    const startTime = Date.now();
-    const targetTime = startTime + 5000; // this set time for explosion to occur
+    replacementDiv.style.width = airplanePosition.width + 'px';
+    replacementDiv.style.height = airplanePosition.height + 'px';
+
+    const animationDelay = 1000; // Delay in milliseconds
+    const animationDuration = 5000; // Animation duration in milliseconds
+    const targetTime = animationDelay + animationDuration; // Target time for the animation to finish
+
+    function startAnimation() {
+      requestAnimationFrame(() => {
+        airplaneDiv.style.transform = 'translate(60vw, -60vh)'; // Move diagonally to top-right
+        setTimeout(() => {
+          startTime = Date.now();
+          updateTimer();
+        }, animationDelay);
+      });
+    }
 
     function updateTimer() {
       const currentTime = Date.now();
       const elapsedTime = currentTime - startTime;
 
       const seconds = Math.floor(elapsedTime / 1000) % 60;
-      const milliseconds = elapsedTime % 1000;
+      timerDiv.textContent = seconds.toString().padStart(2, '0');
 
-      const timerDisplay = `${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(3, '0')}`;
-      document.querySelector('.timer').textContent = timerDisplay;
-
-      if (currentTime >= targetTime) {
-        airplaneDiv.replaceWith(replacementDiv);
-        document.querySelector('.timer').style.display = 'none'; // Hide the timer when it reaches the max code
+      if (elapsedTime >= targetTime) {
+        airplaneDiv.style.display = 'none'; // Hide the airplane
+        replacementDiv.style.display = 'block'; // Display the replacement GIF
+        messageDiv.style.display = 'block'; // Display the message
+        timerDiv.style.display = 'none'; // Hide the timer when it reaches the max time
       }
     }
 
-    setInterval(updateTimer, 100); // Update every 5 milliseconds the timer
+    // Start the animation
+    startAnimation();
+    setInterval(updateTimer, 100); // Update the timer every 100 milliseconds
   </script>
 </body>
 </html>
