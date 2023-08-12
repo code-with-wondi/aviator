@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sky">
+    <div class="clouds"></div>
+    <div class="airplane">
+      <img src="jet.png" alt="">
+    </div>
+    <div class="flame"></div>
+    <div class="flame flame2"></div>
+    <div class="timer">00:000</div>
+    <div class="mountains"></div>
+  </div>
+
+  <script>
+    const airplaneDiv = document.querySelector('.airplane');
+    const replacementDiv = document.createElement('div');
+    replacementDiv.className = 'replacement';
+    replacementDiv.innerHTML = '<img src="giphy.gif" alt="Replacement Gif">';
+
+    const startTime = Date.now();
+    const targetTime = startTime + 5000; // this set time for explosion to occur
+
+    function updateTimer() {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - startTime;
+
+      const seconds = Math.floor(elapsedTime / 1000) % 60;
+      const milliseconds = elapsedTime % 1000;
+
+      const timerDisplay = `${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(3, '0')}`;
+      document.querySelector('.timer').textContent = timerDisplay;
+
+      if (currentTime >= targetTime) {
+        airplaneDiv.replaceWith(replacementDiv);
+        document.querySelector('.timer').style.display = 'none'; // Hide the timer when it reaches the max code
+      }
+    }
+
+    setInterval(updateTimer, 100); // Update every 5 milliseconds
+  </script>
+</body>
+</html>
